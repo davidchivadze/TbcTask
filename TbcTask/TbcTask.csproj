@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.25" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.25" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.25">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TbcTask.Domain.Repository\TbcTask.Domain.Repository.csproj" />
+    <ProjectReference Include="..\TbcTask.Infrastructure.Repository\TbcTask.Infrastructure.Repository.csproj" />
+    <ProjectReference Include="..\TbcTask.Infrastructure.Store\TbcTask.Infrastructure.Store.csproj" />
+  </ItemGroup>
+
+</Project>
