@@ -27,7 +27,7 @@ namespace TbcTask.Infrastructure.Store
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ConnectedPersons>()
-        .HasKey(r => r.Id);
+        .HasKey(r => new{r.PhysicialPersonId,r.ConnectedPersonId}).HasName("DualValidation");
 
             modelBuilder.Entity<ConnectedPersons>()
                 .HasOne(r => r.ConnectedPerson)

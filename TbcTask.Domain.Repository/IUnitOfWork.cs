@@ -6,6 +6,7 @@ namespace TbcTask.Domain.Repository
     {
         IPhysicalPersonRepository physicalPersonRepository { get; }
         IPhoneNumberRepository phoneNumberRepository { get; }
+        IConnectedPersonRepository connectedPersonRepository { get; }
         void Save();
         void BeginTransaction();
         void CommitTransaction();

@@ -52,12 +52,12 @@ namespace TbcTask.Infrastructure.Repository
                  Where(m => m.Id == Id)
                  .Include(m => m.Gender)
                  .Include(m => m.City)
-                 .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
-                 .Include(m => m.ConnectedPersons)
-                 .ThenInclude(m => m.PhysicialPerson)
-                //Include(m=>m.ConnectedPersons).ThenInclude(m=>m.PersonConnectionType)
-                //.Include(m => m.ConnectedPersons)
-
+                 .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType).
+                Include(m => m.ConnectedPersons).ThenInclude(m => m.PersonConnectionType)
+                .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.Gender)
+                 .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.City)
+                  .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers)
+                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m=>m.PhoneType)
                 .FirstOrDefault();
             return result;
         }

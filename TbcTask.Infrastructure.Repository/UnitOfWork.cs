@@ -19,6 +19,7 @@ namespace TbcTask.Infrastructure.Repository
 
         private IPhysicalPersonRepository _physicalPersonRepository;
         private IPhoneNumberRepository _phoneNumberRepository;
+        private IConnectedPersonRepository _connectedPersonRepository;
 
         public UnitOfWork(PersonDbContext context) { 
             _context =context ;
@@ -32,10 +33,15 @@ namespace TbcTask.Infrastructure.Repository
         {
             get { return _phoneNumberRepository = _phoneNumberRepository ?? new PhoneNumberRepository(_context); }
         }
+        public IConnectedPersonRepository connectedPersonRepository
+        {
+            get { return _connectedPersonRepository = _connectedPersonRepository ?? new ConnectedPersonRepository(_context); }
+        }
         public void BeginTransaction()
         {
             _transaction = _context.Database.BeginTransaction();
         }
+        
 
         public void CommitTransaction()
         {

@@ -92,8 +92,15 @@ namespace TbcTask.Infrastructure.Services
 
         public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(int id)
         {
-            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(id).AsGetPhysicalPersonFullDataViewModel();
-            return result;
+            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(id);
+            if (result != null)
+            {
+                return result.AsGetPhysicalPersonFullDataViewModel();
+            }
+            else
+            {
+                throw new DataNotFoundException(ValidationMessages.DataNotFound);
+            }
         }
         private string UploadImage(IFormFile file,string path)
         {
