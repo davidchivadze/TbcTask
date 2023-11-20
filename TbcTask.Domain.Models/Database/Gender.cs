@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TbcTask.Domain.Models.Database
 {
-    public class Gender: BaseDatabase
+    public class Gender
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<PhysicalPerson> PhysicalPersons { get; set;}
+        public virtual List<PhysicalPerson> PhysicalPersons { get; set;}
     }
 }

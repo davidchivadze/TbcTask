@@ -4,9 +4,12 @@ namespace TbcTask.Domain.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<PhysicalPerson> PhysicalPerson { get; }
-
+        IPhysicalPersonRepository physicalPersonRepository { get; }
+        IPhoneNumberRepository phoneNumberRepository { get; }
         void Save();
+        void BeginTransaction();
+        void CommitTransaction();
+        void RollbackTransaction();
     }
 
 

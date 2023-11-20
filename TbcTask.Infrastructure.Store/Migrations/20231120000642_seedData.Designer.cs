@@ -12,8 +12,8 @@ using TbcTask.Infrastructure.Store;
 namespace TbcTask.Infrastructure.Store.Migrations
 {
     [DbContext(typeof(PersonDbContext))]
-    [Migration("20231117075105_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20231120000642_seedData")]
+    partial class seedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,46 @@ namespace TbcTask.Infrastructure.Store.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("TbcTask.Domain.Models.Database.ConnectedPerson", b =>
+            modelBuilder.Entity("TbcTask.Domain.Models.Database.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Tbilisi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Rustavi"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Batumi"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Kutaisi"
+                        });
+                });
+
+            modelBuilder.Entity("TbcTask.Domain.Models.Database.ConnectedPersons", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,17 +72,25 @@ namespace TbcTask.Infrastructure.Store.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ConnectedPersonId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PersonConnectionTypeID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PhysicalPersonID")
+                    b.Property<int>("PhysicialPersonId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ConnectedPersonId");
+
                     b.HasIndex("PersonConnectionTypeID");
 
-                    b.HasIndex("PhysicalPersonID");
+                    b.HasIndex("PhysicialPersonId");
 
                     b.ToTable("ConnectedPersons");
                 });
@@ -63,6 +110,18 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Female"
+                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.PersonConnectionType", b =>
@@ -80,6 +139,28 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PersonConnectionTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Collegue"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Relative"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Familiar"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.Phone", b =>
@@ -125,6 +206,23 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PhoneTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Home"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Office"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Mobile"
+                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.PhysicalPerson", b =>
@@ -151,8 +249,10 @@ namespace TbcTask.Infrastructure.Store.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -165,28 +265,38 @@ namespace TbcTask.Infrastructure.Store.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityID");
+
                     b.HasIndex("GenderID");
 
                     b.ToTable("PhysicalPersons");
                 });
 
-            modelBuilder.Entity("TbcTask.Domain.Models.Database.ConnectedPerson", b =>
+            modelBuilder.Entity("TbcTask.Domain.Models.Database.ConnectedPersons", b =>
                 {
+                    b.HasOne("TbcTask.Domain.Models.Database.PhysicalPerson", "ConnectedPerson")
+                        .WithMany("ConnectedPersons")
+                        .HasForeignKey("ConnectedPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TbcTask.Domain.Models.Database.PersonConnectionType", "PersonConnectionType")
                         .WithMany("ConnectedPerson")
                         .HasForeignKey("PersonConnectionTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TbcTask.Domain.Models.Database.PhysicalPerson", "PhysicalPerson")
-                        .WithMany("ConnectedPersons")
-                        .HasForeignKey("PhysicalPersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("TbcTask.Domain.Models.Database.PhysicalPerson", "PhysicialPerson")
+                        .WithMany()
+                        .HasForeignKey("PhysicialPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("ConnectedPerson");
 
                     b.Navigation("PersonConnectionType");
 
-                    b.Navigation("PhysicalPerson");
+                    b.Navigation("PhysicialPerson");
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.Phone", b =>
@@ -210,13 +320,26 @@ namespace TbcTask.Infrastructure.Store.Migrations
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.PhysicalPerson", b =>
                 {
+                    b.HasOne("TbcTask.Domain.Models.Database.City", "City")
+                        .WithMany("PhysicalPersons")
+                        .HasForeignKey("CityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TbcTask.Domain.Models.Database.Gender", "Gender")
                         .WithMany("PhysicalPersons")
                         .HasForeignKey("GenderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("City");
+
                     b.Navigation("Gender");
+                });
+
+            modelBuilder.Entity("TbcTask.Domain.Models.Database.City", b =>
+                {
+                    b.Navigation("PhysicalPersons");
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.Gender", b =>

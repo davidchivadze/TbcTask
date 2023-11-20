@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +14,48 @@ namespace TbcTask.Infrastructure.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly PersonDbContext _context;
-        public IRepository<PhysicalPerson> PhysicalPerson { get;}
-        public UnitOfWork(PersonDbContext personDbContext) { 
-            _context = personDbContext;
-            PhysicalPerson=new Repository<PhysicalPerson>(personDbContext);
+        private IDbContextTransaction _transaction;
+
+
+        private IPhysicalPersonRepository _physicalPersonRepository;
+        private IPhoneNumberRepository _phoneNumberRepository;
+
+        public UnitOfWork(PersonDbContext context) { 
+            _context =context ;
         }
 
+        public IPhysicalPersonRepository physicalPersonRepository
+        {
+            get { return _physicalPersonRepository =_physicalPersonRepository??new PhysicalPersonRepository(_context); }
+        }
+        public IPhoneNumberRepository phoneNumberRepository
+        {
+            get { return _phoneNumberRepository = _phoneNumberRepository ?? new PhoneNumberRepository(_context); }
+        }
+        public void BeginTransaction()
+        {
+            _transaction = _context.Database.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction?.Commit();
+        }
 
         public void Dispose()
         {
+            _transaction?.Dispose();
             _context.Dispose();
+        }
+
+        public void RollbackTransaction()
+        {
+            _transaction?.Rollback();
         }
 
         public void Save()
         {
+
            _context.SaveChanges();
         }
     }

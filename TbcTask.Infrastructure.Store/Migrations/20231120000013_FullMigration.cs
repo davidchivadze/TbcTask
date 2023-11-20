@@ -5,10 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TbcTask.Infrastructure.Store.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class FullMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Genders",
                 columns: table => new
@@ -60,11 +73,18 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     PrivateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CityID = table.Column<int>(type: "int", nullable: false),
-                    ImageAddress = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    ImageAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PhysicalPersons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PhysicalPersons_City_CityID",
+                        column: x => x.CityID,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PhysicalPersons_Genders_GenderID",
                         column: x => x.GenderID,
@@ -80,7 +100,9 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonConnectionTypeID = table.Column<int>(type: "int", nullable: false),
-                    PhysicalPersonID = table.Column<int>(type: "int", nullable: false)
+                    PhysicialPersonId = table.Column<int>(type: "int", nullable: false),
+                    ConnectedPersonId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,11 +114,17 @@ namespace TbcTask.Infrastructure.Store.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ConnectedPersons_PhysicalPersons_PhysicalPersonID",
-                        column: x => x.PhysicalPersonID,
+                        name: "FK_ConnectedPersons_PhysicalPersons_ConnectedPersonId",
+                        column: x => x.ConnectedPersonId,
                         principalTable: "PhysicalPersons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ConnectedPersons_PhysicalPersons_PhysicialPersonId",
+                        column: x => x.PhysicialPersonId,
+                        principalTable: "PhysicalPersons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,14 +155,19 @@ namespace TbcTask.Infrastructure.Store.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConnectedPersons_ConnectedPersonId",
+                table: "ConnectedPersons",
+                column: "ConnectedPersonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ConnectedPersons_PersonConnectionTypeID",
                 table: "ConnectedPersons",
                 column: "PersonConnectionTypeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConnectedPersons_PhysicalPersonID",
+                name: "IX_ConnectedPersons_PhysicialPersonId",
                 table: "ConnectedPersons",
-                column: "PhysicalPersonID");
+                column: "PhysicialPersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phones_PhoneTypeID",
@@ -145,6 +178,11 @@ namespace TbcTask.Infrastructure.Store.Migrations
                 name: "IX_Phones_PhysicalPersonID",
                 table: "Phones",
                 column: "PhysicalPersonID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhysicalPersons_CityID",
+                table: "PhysicalPersons",
+                column: "CityID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhysicalPersons_GenderID",
@@ -168,6 +206,9 @@ namespace TbcTask.Infrastructure.Store.Migrations
 
             migrationBuilder.DropTable(
                 name: "PhysicalPersons");
+
+            migrationBuilder.DropTable(
+                name: "City");
 
             migrationBuilder.DropTable(
                 name: "Genders");

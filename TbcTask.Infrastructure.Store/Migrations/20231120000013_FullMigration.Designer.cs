@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TbcTask.Infrastructure.Store;
 
@@ -11,9 +12,10 @@ using TbcTask.Infrastructure.Store;
 namespace TbcTask.Infrastructure.Store.Migrations
 {
     [DbContext(typeof(PersonDbContext))]
-    partial class PersonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231120000013_FullMigration")]
+    partial class FullMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,28 +39,6 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("City");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Tbilisi"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Rustavi"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Batumi"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Kutaisi"
-                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.ConnectedPersons", b =>
@@ -108,18 +88,6 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Female"
-                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.PersonConnectionType", b =>
@@ -137,28 +105,6 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PersonConnectionTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Collegue"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Relative"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Familiar"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Other"
-                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.Phone", b =>
@@ -204,23 +150,6 @@ namespace TbcTask.Infrastructure.Store.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PhoneTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Home"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Office"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Mobile"
-                        });
                 });
 
             modelBuilder.Entity("TbcTask.Domain.Models.Database.PhysicalPerson", b =>

@@ -5,11 +5,11 @@ using TbcTask.Infrastructure.Store;
 
 namespace TbcTask.Infrastructure.Repository
 {
-    public class Repository<T> : IRepository<T> where T : BaseDatabase
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseDatabase
     {
         private readonly PersonDbContext _PersonDbContext;
-        private readonly DbSet<T> _DbSet;
-        public Repository(PersonDbContext personDbContext) {
+        public readonly DbSet<T> _DbSet;
+        public BaseRepository(PersonDbContext personDbContext) {
         
         _PersonDbContext = personDbContext;
             _DbSet = personDbContext.Set<T>();
@@ -40,6 +40,14 @@ namespace TbcTask.Infrastructure.Repository
         public void Update(T entity)
         {
             _PersonDbContext.Entry(entity).State = EntityState.Modified;
+        }
+        public void Save()
+        {
+            _PersonDbContext.SaveChanges();
+        }
+        public async Task SaveAsync()
+        {
+            await _PersonDbContext.SaveChangesAsync();
         }
     }
 }

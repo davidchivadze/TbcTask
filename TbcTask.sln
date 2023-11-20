@@ -13,13 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Infrastructure.Stor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Domain.Models", "TbcTask.Domain.Models\TbcTask.Domain.Models.csproj", "{20A7DA61-9798-4875-A956-3B3C919D2C68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TbcTask.Domain.Repository", "TbcTask.Domain.Repository\TbcTask.Domain.Repository.csproj", "{B83FB512-7FAE-4E72-BB59-5B6CC0F03259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Domain.Repository", "TbcTask.Domain.Repository\TbcTask.Domain.Repository.csproj", "{B83FB512-7FAE-4E72-BB59-5B6CC0F03259}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TbcTask.Infrastructure.Repository", "TbcTask.Infrastructure.Repository\TbcTask.Infrastructure.Repository.csproj", "{6195B443-9E0E-4BD1-9C6B-A93246EA9718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Infrastructure.Repository", "TbcTask.Infrastructure.Repository\TbcTask.Infrastructure.Repository.csproj", "{6195B443-9E0E-4BD1-9C6B-A93246EA9718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TbcTask.Domain.Services", "TbcTask.Domain.Services\TbcTask.Domain.Services.csproj", "{5297AE77-BA57-4B41-B2E2-BF6ABF6D63D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Domain.Services", "TbcTask.Domain.Services\TbcTask.Domain.Services.csproj", "{5297AE77-BA57-4B41-B2E2-BF6ABF6D63D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TbcTask.Infrastructure.Services", "TbcTask.Infrastructure.Services\TbcTask.Infrastructure.Services.csproj", "{59E10125-C3FD-41FB-AEB0-B66F570155B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TbcTask.Infrastructure.Services", "TbcTask.Infrastructure.Services\TbcTask.Infrastructure.Services.csproj", "{59E10125-C3FD-41FB-AEB0-B66F570155B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TbcTask.Infrastructure.Middlewares", "TbcTask.Infrastructure.Middlewares\TbcTask.Infrastructure.Middlewares.csproj", "{4C0262CD-D611-4096-A2C8-4941CA4675ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{59E10125-C3FD-41FB-AEB0-B66F570155B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59E10125-C3FD-41FB-AEB0-B66F570155B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59E10125-C3FD-41FB-AEB0-B66F570155B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C0262CD-D611-4096-A2C8-4941CA4675ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C0262CD-D611-4096-A2C8-4941CA4675ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C0262CD-D611-4096-A2C8-4941CA4675ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C0262CD-D611-4096-A2C8-4941CA4675ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{6195B443-9E0E-4BD1-9C6B-A93246EA9718} = {1C625AA7-53B5-4120-83D2-826BE7554D9F}
 		{5297AE77-BA57-4B41-B2E2-BF6ABF6D63D4} = {382B2D88-C8E8-4498-BC3B-C1AC558CADA7}
 		{59E10125-C3FD-41FB-AEB0-B66F570155B4} = {1C625AA7-53B5-4120-83D2-826BE7554D9F}
+		{4C0262CD-D611-4096-A2C8-4941CA4675ED} = {1C625AA7-53B5-4120-83D2-826BE7554D9F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41AACB11-AD42-4F4B-A496-93E1EBE3AFC9}

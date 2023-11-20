@@ -3,17 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TbcTask.Domain.Models.Database
 {
-    public class ConnectedPerson: BaseDatabase
+    public class ConnectedPersons: BaseDatabase
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key, Column(Order = 0)]
         public int Id { get; set; }
-        [ForeignKey("PersonConnectionType")]
+
         public int PersonConnectionTypeID { get; set; }
-        [ForeignKey("PhysicialPerson")]
-        public int PhysicalPersonID { get; set; }
+        public int PhysicialPersonId { get;set; }
+        public int ConnectedPersonId {  get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public virtual PersonConnectionType PersonConnectionType { get; set; }
-        public virtual PhysicalPerson PhysicalPerson { get; set; }
+
+        public virtual PhysicalPerson PhysicialPerson { get; set; }
+
+        public virtual PhysicalPerson ConnectedPerson { get; set; }
     }
 }

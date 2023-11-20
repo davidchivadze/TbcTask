@@ -7,7 +7,7 @@ using TbcTask.Domain.Models.Database;
 
 namespace TbcTask.Domain.Repository
 {
-    public interface IRepository<T> where T : BaseDatabase
+    public interface IBaseRepository<T> where T : BaseDatabase
     {
         IQueryable<T> GetAll();
         T GetById(int id);
