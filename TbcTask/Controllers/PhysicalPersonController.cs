@@ -39,7 +39,7 @@ namespace TbcTask.Controllers
             }
         }
         [HttpGet("SearchPhysicalPerson/{key}")]
-        public async Task<Result<List<SearchPhysicalPersonDataResponse>>> SearchPhysicalPersonData(string key)
+        public async Task<Result<List<SearchPhysicalPersonDataResponse>>> SearchPhysicalPersonData(SearchPhysicalPersonDataRequest request)
         {
             try
             {
