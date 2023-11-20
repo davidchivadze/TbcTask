@@ -126,6 +126,12 @@
   <data name="DataNotFound" xml:space="preserve">
     <value>ჩანაწერი ვერ მოიძებნა</value>
   </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>ფაილი ვერ მოიძებნა</value>
+  </data>
+  <data name="IncorrectFormat" xml:space="preserve">
+    <value>არასწორი ფაილის ფორმატი</value>
+  </data>
   <data name="PersonNotFoundWIthID" xml:space="preserve">
     <value>ფიზიკური პირი ID ით {0} ვერ მოიძებნა</value>
   </data>

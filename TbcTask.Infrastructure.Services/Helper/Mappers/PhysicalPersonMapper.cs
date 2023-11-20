@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using TbcTask.Domain.Models.Database;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Responses;
+using TbcTask.Infrastructure.Services.Helper.FileManager;
 
-namespace TbcTask.Infrastructure.Services.Helper
+namespace TbcTask.Infrastructure.Services.Helper.Mappers
 {
     public static class PhysicalPersonMapper
     {
@@ -50,7 +51,7 @@ namespace TbcTask.Infrastructure.Services.Helper
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender?.Name,
-                ImageAddress = model.ImageAddress,
+                Image =!String.IsNullOrEmpty(model.ImageAddress)?FileManager.FileManager.GetFileFromServer("Uploads",model.ImageAddress):"",
                 PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
             };
@@ -60,12 +61,12 @@ namespace TbcTask.Infrastructure.Services.Helper
             return new ConnectedPersonResponse()
             {
                 Id = model.Id,
-                City = model.City?.Name,             
+                City = model.City?.Name,
                 DateOfBirth = model.DateOfBirth,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender?.Name,
-                ImageAddress = model.ImageAddress,
+                ImageAddress = !String.IsNullOrEmpty(model.ImageAddress) ? FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress) : "",
                 PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
             };
@@ -84,14 +85,14 @@ namespace TbcTask.Infrastructure.Services.Helper
 
             };
         }
-        public static Phone AsEditPhoneDatabaseModel(this AddOrEditPhoneNumberRequest model,int personID)
+        public static Phone AsEditPhoneDatabaseModel(this AddOrEditPhoneNumberRequest model, int personID)
         {
             return new Phone()
             {
                 Id = model.Id,
                 PhoneNumber = model.PhoneNumber,
                 PhoneTypeID = model.TypeID,
-                PhysicalPersonID=personID
+                PhysicalPersonID = personID
             };
         }
         public static EditPhysicalPersonResponse AsEditPhysicalPersonViewModel(this PhysicalPerson model)

@@ -88,6 +88,24 @@ namespace TbcTask.Domain.Models.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ფაილი ვერ მოიძებნა.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to არასწორი ფაილის ფორმატი.
+        /// </summary>
+        public static string IncorrectFormat {
+            get {
+                return ResourceManager.GetString("IncorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ფიზიკური პირი ID ით {0} ვერ მოიძებნა.
         /// </summary>
         public static string PersonNotFoundWIthID {

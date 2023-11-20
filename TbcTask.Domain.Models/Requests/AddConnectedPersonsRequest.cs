@@ -8,7 +8,7 @@ using TbcTask.Domain.Models.Resources;
 
 namespace TbcTask.Domain.Models.Requests
 {
-    public class AddOrRemoveConnectedPersonsRequest
+    public class AddConnectedPersonsRequest
     {
         [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
         public int? ConnectionTypeID { get; set; }
@@ -16,6 +16,5 @@ namespace TbcTask.Domain.Models.Requests
         public int? PhysicalPersonID { get; set; }
         [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
         public int? ConnectedPersonID { get; set;}
-        public bool IsDeleteAction { get; set; }
     }
 }

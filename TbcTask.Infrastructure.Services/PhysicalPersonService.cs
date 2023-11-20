@@ -11,7 +11,8 @@ using TbcTask.Domain.Models.Responses;
 using TbcTask.Domain.Models.Responses.Base;
 using TbcTask.Domain.Repository;
 using TbcTask.Domain.Services;
-using TbcTask.Infrastructure.Services.Helper;
+using TbcTask.Infrastructure.Services.Helper.FileManager;
+using TbcTask.Infrastructure.Services.Helper.Mappers;
 
 namespace TbcTask.Infrastructure.Services
 {
@@ -23,20 +24,15 @@ namespace TbcTask.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<AddOrRemoveConnectedPersonsResponse> AddOrRemoveConnectedPersons(AddOrRemoveConnectedPersonsRequest request)
+        public async Task<AddConnectedPersonsResponse> AddConnectedPersons(AddConnectedPersonsRequest request)
         {
             using (var transaction=_unitOfWork.BeginTransaction())
             {
                 var connectedPersons = request.AsConnectedPersonsDatabaseModel();
                 try
                 {
-                    ValidateAddOrRemoveConnectedPersons(request);
+                    ValidateAddOrRemoveConnectedPersons(connectedPersons);
                     var connectionExist = _unitOfWork.connectedPersonRepository.GetIfConnectionExist(connectedPersons);
-                    if (request.IsDeleteAction)
-                    {
-                        if (connectionExist == null) { throw new DatabaseValidationException(ErrorResponses.ConnectionDontExist); }
-                        _unitOfWork.connectedPersonRepository.DeleteConnection(connectedPersons);
-                    }
 
 
 
@@ -58,7 +54,7 @@ namespace TbcTask.Infrastructure.Services
                     }
                     _unitOfWork.Save();
                     _unitOfWork.CommitTransaction();
-                    return new AddOrRemoveConnectedPersonsResponse()
+                    return new AddConnectedPersonsResponse()
                     {
                         Success = true,
                         ConnectedPersonID = request.ConnectedPersonID.Value,
@@ -77,7 +73,7 @@ namespace TbcTask.Infrastructure.Services
             var person = _unitOfWork.physicalPersonRepository.GetById(request.Id);
             if (person != null)
             {
-                var updatePhoto = this.UploadImage(request.PhysicalPersonImage, uploadFolder);
+                var updatePhoto = FileManager.StoreFileOnServer(request.PhysicalPersonImage, uploadFolder);
                 _unitOfWork.physicalPersonRepository.UpdatePersonImageAddress(request.Id, updatePhoto);
                 return new UploadPersonImageResponse()
                 {
@@ -168,28 +164,46 @@ namespace TbcTask.Infrastructure.Services
                 throw new DataNotFoundException(ErrorResponses.DataNotFound);
             }
         }
-        private string UploadImage(IFormFile file, string path)
+
+        public async Task<RemoveConnectedPersonsResponse> RemoveConnectedPersons(RemoveConnectedPersonsRequest request)
         {
-            var fileName = $"{Guid.NewGuid().ToString()}_{file.FileName}";
-            var directory = Path.Combine(path, "Uploads");
-            if (!Directory.Exists(directory))
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
-                Directory.CreateDirectory(directory);
+                var connectedPersons = request.AsConnectedPersonDatabaseModel();
+                try
+                {
+                    ValidateAddOrRemoveConnectedPersons(connectedPersons);
+                    var connectionExist = _unitOfWork.connectedPersonRepository.GetIfConnectionExist(connectedPersons);
+
+                        if (connectionExist == null) { throw new DatabaseValidationException(ErrorResponses.ConnectionDontExist); }
+                        _unitOfWork.connectedPersonRepository.DeleteConnection(connectedPersons);
+
+
+                    _unitOfWork.Save();
+                    _unitOfWork.CommitTransaction();
+                    return new RemoveConnectedPersonsResponse()
+                    {
+                        Success = true,
+                        ConnectedPersonID = connectedPersons.ConnectedPersonId,
+                        PhysicalPersonID = connectedPersons.PhysicialPersonId
+                    };
+
+                }
+                catch (Exception ex)
+                {
+                    _unitOfWork.RollbackTransaction();
+                    throw;
+                }
             }
-            var uploadsFolder = Path.Combine(directory, fileName);
-            using (var fileStream = new FileStream(uploadsFolder, FileMode.Create))
-            {
-                file.CopyTo(fileStream);
-            }
-            return uploadsFolder;
         }
-        private void ValidateAddOrRemoveConnectedPersons( AddOrRemoveConnectedPersonsRequest request)
+
+        private void ValidateAddOrRemoveConnectedPersons(ConnectedPersons request)
         {
 
-            var person = _unitOfWork.physicalPersonRepository.GetById(request.PhysicalPersonID.Value);
-            if (person == null || person.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.PhysicalPersonID.Value));
-            var connectedPerson = _unitOfWork.physicalPersonRepository.GetById(request.ConnectedPersonID.Value);
-            if (connectedPerson == null || connectedPerson.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.PhysicalPersonID.Value));
+            var person = _unitOfWork.physicalPersonRepository.GetById(request.PhysicialPersonId);
+            if (person == null || person.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.PhysicialPersonId));
+            var connectedPerson = _unitOfWork.physicalPersonRepository.GetById(request.ConnectedPersonId);
+            if (connectedPerson == null || connectedPerson.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.ConnectedPersonId));
         }
     }
 }

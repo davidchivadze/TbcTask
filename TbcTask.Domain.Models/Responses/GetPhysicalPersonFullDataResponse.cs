@@ -20,7 +20,7 @@ namespace TbcTask.Domain.Models.Responses
         public DateTime DateOfBirth { get; set; }
         public string City { get; set; }
         public ICollection<PhoneNumberResponse> PhoneNumbers { get; set; }
-        public string? ImageAddress { get; set; }
+        public string Image { get; set; }
         public ICollection<ConnectedPersonResponse> ConnectedPersons { get; set; }
     }
 }

@@ -92,7 +92,7 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpPost("AddOrUpdateImage")]
+        [HttpPut("AddOrUpdateImage")]
         public async Task<Result<UploadPersonImageResponse>> AddOrUpdateImage([FromForm]UploadPersonImageRequest request)
         {
             try
@@ -124,17 +124,34 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpPost("AddConnectedPersons")]
-        public async Task<Result<AddOrRemoveConnectedPersonsResponse>> AddConnectedPersons(AddOrRemoveConnectedPersonsRequest request)
+        [HttpDelete("DeleteConnection")]
+        public async Task<Result<RemoveConnectedPersonsResponse>> RemoveConnectedPersons(RemoveConnectedPersonsRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.AddOrRemoveConnectedPersons(request);
-                return Result<AddOrRemoveConnectedPersonsResponse>.Ok(result);
+                var result = await _PhysicalPersonService.RemoveConnectedPersons(request);
+                return Result<RemoveConnectedPersonsResponse>.Ok(result);
             }
             catch (ApiException ex)
             {
-                return Result<AddOrRemoveConnectedPersonsResponse>.ReturnCode(ex);
+                return Result<RemoveConnectedPersonsResponse>.ReturnCode(ex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost("AddConnectedPersons")]
+        public async Task<Result<AddConnectedPersonsResponse>> AddConnectedPersons(AddConnectedPersonsRequest request)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.AddConnectedPersons(request);
+                return Result<AddConnectedPersonsResponse>.Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                return Result<AddConnectedPersonsResponse>.ReturnCode(ex);
             }
             catch (Exception ex)
             {

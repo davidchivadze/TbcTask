@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TbcTask.Domain.Models.Responses
 {
-    public class AddOrRemoveConnectedPersonsResponse
+    public class AddConnectedPersonsResponse
     {
         public bool Success { get; set; }
         public int PhysicalPersonID { get; set; }   
