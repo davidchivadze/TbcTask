@@ -64,6 +64,16 @@ namespace TbcTask.Infrastructure.Repository
             return result;
         }
 
+        public List<PhysicalPerson> SearchPhysicalPersonData(string request)
+        {
+            var result = _DbSet.Where(m => m.FirstName.Contains(request) || m.LastName.Contains(request) || m.PrivateNumber.Contains(request))
+                .Include(m => m.City)
+                .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
+                .Include(m => m.Gender)
+                .ToList();
+              return result;
+        }
+
         public void UpdatePersonImageAddress(int Id, string address)
         {
             var person = _DbSet.Where(m => m.Id == Id).First();

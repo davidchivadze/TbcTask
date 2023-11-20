@@ -14,5 +14,6 @@ namespace TbcTask.Domain.Services
         Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id);
         Task<AddConnectedPersonsResponse> AddConnectedPersons(AddConnectedPersonsRequest request);
         Task<RemoveConnectedPersonsResponse> RemoveConnectedPersons(RemoveConnectedPersonsRequest request);
+        Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(string request);
     }
 }

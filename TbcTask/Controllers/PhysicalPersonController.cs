@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
 using TbcTask.ActionFilters.Validation;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Responses;
-using TbcTask.Domain.Models.Responses.Base;
 using TbcTask.Domain.Services;
 
 namespace TbcTask.Controllers
@@ -23,42 +20,9 @@ namespace TbcTask.Controllers
             _PhysicalPersonService = physicalPersonService;
             _WebHostEnvironment = webHostEnvironment;
         }
-        [HttpPost("AddPhysicalPersons")]
-        public async Task<Result<GetPhysicalPersonFullDataResponse>> AddPhysicalPersons(int Id)
-        {
-            try
-            {
-                var result = await _PhysicalPersonService.GetPhysicalPersonFullData(Id);
-                return Result<GetPhysicalPersonFullDataResponse>.Ok(result);
-            }
-            catch (ApiException ex)
-            {
-                return Result<GetPhysicalPersonFullDataResponse>.ReturnCode(ex);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [HttpPost("AddPhysicalPerson")]
-        public async Task<Result<AddPhysicalPersonResponse>> AddPhysicalPerson([FromBody] AddPhysicalPersonRequest request)
-        {
-            try
-            {
-                var result = await _PhysicalPersonService.AddPhysicalPerson(request);
-                return Result<AddPhysicalPersonResponse>.Ok(result);
-            }
-            catch (ApiException ex)
-            {
-                return Result<AddPhysicalPersonResponse>.ReturnCode(ex);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [HttpGet("{Id}")]
-        public async Task<Result<GetPhysicalPersonFullDataResponse>> Get(int Id)
+
+        [HttpGet("GetPhysicalPersonFullData/{Id}")]
+        public async Task<Result<GetPhysicalPersonFullDataResponse>> GetPhysicalPersonFullData(int Id)
         {
             try
             {
@@ -74,24 +38,24 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-
-        [HttpPatch("EditPhysicalPerson")]
-        public async Task<Result<EditPhysicalPersonResponse>> EditPhysicalPerson([FromBody] EditPhysicalPersonRequest request)
+        [HttpGet("SearchPhysicalPerson/{key}")]
+        public async Task<Result<List<SearchPhysicalPersonDataResponse>>> SearchPhysicalPersonData(string key)
         {
             try
             {
-                var result = await _PhysicalPersonService.EditPhysicalPerson(request);
-                return Result<EditPhysicalPersonResponse>.Ok(result);
+                var result = await _PhysicalPersonService.SearchPhysicalPersonData(key);
+                return Result<List<SearchPhysicalPersonDataResponse>>.Ok(result);
             }
-            catch(ApiException ex)
+            catch (ApiException ex)
             {
-                return Result<EditPhysicalPersonResponse>.ReturnCode(ex);
+                return Result<List<SearchPhysicalPersonDataResponse>>.ReturnCode(ex);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
         [HttpPut("AddOrUpdateImage")]
         public async Task<Result<UploadPersonImageResponse>> AddOrUpdateImage([FromForm]UploadPersonImageRequest request)
         {
@@ -152,6 +116,40 @@ namespace TbcTask.Controllers
             catch (ApiException ex)
             {
                 return Result<AddConnectedPersonsResponse>.ReturnCode(ex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost("AddPhysicalPerson")]
+        public async Task<Result<AddPhysicalPersonResponse>> AddPhysicalPerson([FromBody] AddPhysicalPersonRequest request)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.AddPhysicalPerson(request);
+                return Result<AddPhysicalPersonResponse>.Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                return Result<AddPhysicalPersonResponse>.ReturnCode(ex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPatch("EditPhysicalPerson")]
+        public async Task<Result<EditPhysicalPersonResponse>> EditPhysicalPerson([FromBody] EditPhysicalPersonRequest request)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.EditPhysicalPerson(request);
+                return Result<EditPhysicalPersonResponse>.Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                return Result<EditPhysicalPersonResponse>.ReturnCode(ex);
             }
             catch (Exception ex)
             {

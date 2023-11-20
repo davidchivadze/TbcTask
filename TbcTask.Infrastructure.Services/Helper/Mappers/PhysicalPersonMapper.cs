@@ -33,7 +33,7 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 PhoneNumber = model.PhoneNumber,
             };
         }
-        public static AddPhysicalPersonResponse AsViewModel(this PhysicalPerson model)
+        public static AddPhysicalPersonResponse AsAddPhysicalPersonViewModel(this PhysicalPerson model)
         {
             return new AddPhysicalPersonResponse()
             {
@@ -51,8 +51,8 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender?.Name,
-                Image =!String.IsNullOrEmpty(model.ImageAddress)?FileManager.FileManager.GetFileFromServer("Uploads",model.ImageAddress):"",
-                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsViewModel()).ToList(),
+                Image = !String.IsNullOrEmpty(model.ImageAddress) ? FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress) : "",
+                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
             };
         }
@@ -67,7 +67,7 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 LastName = model.LastName,
                 Gender = model.Gender?.Name,
                 ImageAddress = !String.IsNullOrEmpty(model.ImageAddress) ? FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress) : "",
-                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsViewModel()).ToList(),
+                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
             };
         }
@@ -106,16 +106,31 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 LastName = model.LastName,
                 Gender = model.Gender?.Name,
                 ImageAddress = model.ImageAddress,
-                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsViewModel()).ToList(),
+                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
             };
         }
-        public static PhoneNumberResponse AsViewModel(this Phone phone)
+        public static PhoneNumberResponse AsPhoneNumberViewModel(this Phone phone)
         {
             return new PhoneNumberResponse()
             {
                 PhoneNumber = phone.PhoneNumber,
                 Type = phone.PhoneType.Name
+            };
+        }
+        public static SearchPhysicalPersonDataResponse AsSearchPhysicalPersonDataViewModel(this PhysicalPerson model)
+        {
+            return new SearchPhysicalPersonDataResponse()
+            {
+                Id = model.Id,
+                City = model.City?.Name,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth,
+                Gender = model.Gender?.Name,
+                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
+                PrivateNumber = model.PrivateNumber,
+                Image = String.IsNullOrEmpty(model.ImageAddress) ? "" : FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress)
             };
         }
     }

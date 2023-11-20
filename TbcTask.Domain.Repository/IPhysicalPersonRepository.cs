@@ -13,5 +13,6 @@ namespace TbcTask.Domain.Repository
         PhysicalPerson GetPhysicalPersonFullData(int Id);
         PhysicalPerson EditPhysicalPerson(PhysicalPerson physicalPerson);
         void UpdatePersonImageAddress(int Id, string address);
+        List<PhysicalPerson> SearchPhysicalPersonData(string request);
     }
 }

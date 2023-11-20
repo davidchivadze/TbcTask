@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+﻿using System.ComponentModel.DataAnnotations;
 using TbcTask.Domain.Models.Database;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Resources;
 using TbcTask.Domain.Models.Responses;
-using TbcTask.Domain.Models.Responses.Base;
 using TbcTask.Domain.Repository;
 using TbcTask.Domain.Services;
 using TbcTask.Infrastructure.Services.Helper.FileManager;
@@ -91,7 +86,7 @@ namespace TbcTask.Infrastructure.Services
         public async Task<AddPhysicalPersonResponse> AddPhysicalPerson(AddPhysicalPersonRequest addphysicalPersonRequest)
         {
             var result = _unitOfWork.physicalPersonRepository.AddPhysicalPerson(addphysicalPersonRequest.AsDatabaseModel());
-            return result.AsViewModel();
+            return result.AsAddPhysicalPersonViewModel();
         }
 
         public async Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id)
@@ -195,6 +190,17 @@ namespace TbcTask.Infrastructure.Services
                     throw;
                 }
             }
+        }
+
+        public async Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(string request)
+        {
+            var result = _unitOfWork.physicalPersonRepository.SearchPhysicalPersonData(request);
+            if(result.Count == 0)
+            {
+                throw new DataNotFoundException(ErrorResponses.DataNotFound);
+            }
+            var returnResult = result.Select(m => m.AsSearchPhysicalPersonDataViewModel()).ToList();
+            return returnResult;
         }
 
         private void ValidateAddOrRemoveConnectedPersons(ConnectedPersons request)

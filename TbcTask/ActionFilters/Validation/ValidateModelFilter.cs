@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TbcTask.Domain.Models.Responses;
-using Microsoft.OpenApi.Any;
-using TbcTask.Domain.Models.Responses.Base;
 using System.Net;
 
 namespace TbcTask.ActionFilters.Validation
