@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using System.Net;
+using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Resources;
 using TbcTask.Domain.Models.Responses;
 
@@ -29,5 +30,20 @@ namespace TbcTask.Domain.Models.Responses
 
             return new Result<T>(new Response<T>(code, message), (int)code);
         }
+        public static Result<T> ReturnCode(ApiException ex)
+        {
+            switch (ex)
+            {
+                case DataNotFoundException:
+                    return new Result<T>(new Response<T>(HttpStatusCode.NotFound, ex.Message), (int)HttpStatusCode.NotFound);
+                case ApiException:
+                     return new Result<T>(new Response<T>(HttpStatusCode.MethodNotAllowed, ex.Message), (int)HttpStatusCode.MethodNotAllowed);
+                default:
+                    return new Result<T>(new Response<T>(HttpStatusCode.InternalServerError, ex.Message), (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+
+        
     }
 }

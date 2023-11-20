@@ -37,9 +37,10 @@ namespace TbcTask.Infrastructure.Repository
         {
             get { return _connectedPersonRepository = _connectedPersonRepository ?? new ConnectedPersonRepository(_context); }
         }
-        public void BeginTransaction()
+        public IDisposable BeginTransaction()
         {
             _transaction = _context.Database.BeginTransaction();
+            return _transaction;
         }
         
 

@@ -117,19 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConnectionDontExist" xml:space="preserve">
+    <value>კავშირი ამ ორ ფიზიკურ პირს შორის არ არსებობს</value>
+  </data>
+  <data name="ConnectionExist" xml:space="preserve">
+    <value>კავშირი ამ ორ ფიზიკურ პირს შორის უკვე არსებობს</value>
+  </data>
   <data name="DataNotFound" xml:space="preserve">
-    <value>Data Not Found</value>
+    <value>ჩანაწერი ვერ მოიძებნა</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="MinLength" xml:space="preserve">
-    <value>Field {0} Min leangth must be in least {1} symbol</value>
+  <data name="PersonNotFoundWIthID" xml:space="preserve">
+    <value>ფიზიკური პირი ID ით {0} ვერ მოიძებნა</value>
   </data>
   <data name="PhoneNumberNotFound" xml:space="preserve">
-    <value>Phone number with ID :{0} don't belong person with ID:{1}</value>
+    <value>ტელეფონის ნომერი ID ით :{0} არ ეკუთვნის ფიზიკურ პირს:{1}</value>
   </data>
   <data name="RequiredErrorMessage" xml:space="preserve">
-    <value>The field '{0}' is required</value>
+    <value>ველის ' {0} ' შევსება სავალდებულოა</value>
   </data>
 </root>

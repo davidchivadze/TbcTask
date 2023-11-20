@@ -11,5 +11,8 @@ namespace TbcTask.Domain.Repository
     {
         List<ConnectedPersons> GetConnectedPersons(int id);
         void AddConnectedPeople(ConnectedPersons connectedPersons);
+        ConnectedPersons GetIfConnectionExist(ConnectedPersons connectedPersons);
+        void UpdateConnection(ConnectedPersons connectedPersons);
+        void DeleteConnection(ConnectedPersons connectedPersons);
     }
 }

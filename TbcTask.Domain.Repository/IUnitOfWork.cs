@@ -8,7 +8,7 @@ namespace TbcTask.Domain.Repository
         IPhoneNumberRepository phoneNumberRepository { get; }
         IConnectedPersonRepository connectedPersonRepository { get; }
         void Save();
-        void BeginTransaction();
+        IDisposable BeginTransaction();
         void CommitTransaction();
         void RollbackTransaction();
     }

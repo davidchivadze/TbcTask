@@ -11,5 +11,7 @@ namespace TbcTask.Domain.Services
         Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(int id);
         Task<EditPhysicalPersonResponse> EditPhysicalPerson(EditPhysicalPersonRequest editphysicalPersonRequest);
         Task<UploadPersonImageResponse> AddOrUploadPersonImage(UploadPersonImageRequest request,string uploadFolder);
+        Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id);
+        Task<AddOrRemoveConnectedPersonsResponse> AddOrRemoveConnectedPersons(AddOrRemoveConnectedPersonsRequest request);
     }
 }

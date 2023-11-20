@@ -123,10 +123,10 @@
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>
+  <data name="PhoneNumberNotFound" xml:space="preserve">
+    <value>ტელეფონის ნომერი ID ით :{0} არ ეკუთვნის ფიზიკურ პირს:{1}</value>
+  </data>
   <data name="RequiredErrorMessage" xml:space="preserve">
     <value>ველის ' {0} ' შევსება სავალდებულოა</value>
-  </data>
-  <data name="Test" xml:space="preserve">
-    <value>Test</value>
   </data>
 </root>

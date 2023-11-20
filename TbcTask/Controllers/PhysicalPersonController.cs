@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TbcTask.ActionFilters.Validation;
+using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Responses;
 using TbcTask.Domain.Models.Responses.Base;
@@ -30,9 +31,13 @@ namespace TbcTask.Controllers
                 var result = await _PhysicalPersonService.GetPhysicalPersonFullData(Id);
                 return Result<GetPhysicalPersonFullDataResponse>.Ok(result);
             }
+            catch (ApiException ex)
+            {
+                return Result<GetPhysicalPersonFullDataResponse>.ReturnCode(ex);
+            }
             catch (Exception ex)
             {
-                return Result<GetPhysicalPersonFullDataResponse>.ReturnCode(HttpStatusCode.InternalServerError,ex.Message);
+                throw ex;
             }
         }
         [HttpPost("AddPhysicalPerson")]
@@ -43,9 +48,13 @@ namespace TbcTask.Controllers
                 var result = await _PhysicalPersonService.AddPhysicalPerson(request);
                 return Result<AddPhysicalPersonResponse>.Ok(result);
             }
+            catch (ApiException ex)
+            {
+                return Result<AddPhysicalPersonResponse>.ReturnCode(ex);
+            }
             catch (Exception ex)
             {
-                return Result<AddPhysicalPersonResponse>.ReturnCode(HttpStatusCode.InternalServerError,ex.Message);
+                throw ex;
             }
         }
         [HttpGet("{Id}")]
@@ -56,13 +65,17 @@ namespace TbcTask.Controllers
                 var result =await _PhysicalPersonService.GetPhysicalPersonFullData(Id);
                 return Result<GetPhysicalPersonFullDataResponse>.Ok(result);
             }
+            catch (ApiException ex)
+            {
+                return Result<GetPhysicalPersonFullDataResponse>.ReturnCode(ex);
+            }
             catch (Exception ex)
             {
-                return Result <GetPhysicalPersonFullDataResponse>.ReturnCode(HttpStatusCode.InternalServerError,ex.Message);
+                throw ex;
             }
         }
 
-        [HttpPost("EditPhysicalPerson")]
+        [HttpPatch("EditPhysicalPerson")]
         public async Task<Result<EditPhysicalPersonResponse>> EditPhysicalPerson([FromBody] EditPhysicalPersonRequest request)
         {
             try
@@ -70,9 +83,13 @@ namespace TbcTask.Controllers
                 var result = await _PhysicalPersonService.EditPhysicalPerson(request);
                 return Result<EditPhysicalPersonResponse>.Ok(result);
             }
+            catch(ApiException ex)
+            {
+                return Result<EditPhysicalPersonResponse>.ReturnCode(ex);
+            }
             catch (Exception ex)
             {
-                return Result<EditPhysicalPersonResponse>.ReturnCode(HttpStatusCode.InternalServerError, ex.Message);
+                throw ex;
             }
         }
         [HttpPost("AddOrUpdateImage")]
@@ -83,9 +100,45 @@ namespace TbcTask.Controllers
                 var result = await _PhysicalPersonService.AddOrUploadPersonImage(request,String.IsNullOrEmpty(_WebHostEnvironment.WebRootPath)?
                     _WebHostEnvironment.ContentRootPath:_WebHostEnvironment.WebRootPath);
                 return Result<UploadPersonImageResponse>.Ok(result);
+            }catch(ApiException ex)
+            {
+                return Result<UploadPersonImageResponse>.ReturnCode(ex);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpDelete("DeletePhysicalPerson")]
+        public async Task<Result<GetPhysicalPersonFullDataResponse>> DeletePhysicalPerson(int Id)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.DeletePhysicalPerson(Id);
+                return Result<GetPhysicalPersonFullDataResponse>.Ok(result);
+            }catch(ApiException ex)
+            {
+                return Result<GetPhysicalPersonFullDataResponse>.ReturnCode(ex);
             }catch(Exception ex)
             {
-                return Result<UploadPersonImageResponse>.ReturnCode(HttpStatusCode.InternalServerError, ex.Message);
+                throw ex;
+            }
+        }
+        [HttpPost("AddConnectedPersons")]
+        public async Task<Result<AddOrRemoveConnectedPersonsResponse>> AddConnectedPersons(AddOrRemoveConnectedPersonsRequest request)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.AddOrRemoveConnectedPersons(request);
+                return Result<AddOrRemoveConnectedPersonsResponse>.Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                return Result<AddOrRemoveConnectedPersonsResponse>.ReturnCode(ex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

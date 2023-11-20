@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TbcTask.Domain.Models.Database;
+using TbcTask.Domain.Models.Exceptions;
+using TbcTask.Domain.Models.Resources;
 using TbcTask.Domain.Repository;
 using TbcTask.Infrastructure.Store;
 
@@ -41,7 +43,7 @@ namespace TbcTask.Infrastructure.Repository
             }
             else
             {
-                throw new KeyNotFoundException("Data not Found");
+                throw new DataNotFoundException(ErrorResponses.DataNotFound);
             }
         }
 
@@ -49,7 +51,7 @@ namespace TbcTask.Infrastructure.Repository
         public PhysicalPerson GetPhysicalPersonFullData(int Id)
         {
             var result = _DbSet.
-                 Where(m => m.Id == Id)
+                 Where(m => m.Id == Id&&m.IsDeleted==false)
                  .Include(m => m.Gender)
                  .Include(m => m.City)
                  .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType).

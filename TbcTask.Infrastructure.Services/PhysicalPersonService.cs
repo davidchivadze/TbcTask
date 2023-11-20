@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using TbcTask.Domain.Models.Database;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Resources;
@@ -17,50 +18,115 @@ namespace TbcTask.Infrastructure.Services
     public class PhysicalPersonService : IPhysicalPersonService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PhysicalPersonService(IUnitOfWork unitOfWork) { 
-          _unitOfWork = unitOfWork;
+        public PhysicalPersonService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<AddOrRemoveConnectedPersonsResponse> AddOrRemoveConnectedPersons(AddOrRemoveConnectedPersonsRequest request)
+        {
+            using (var transaction=_unitOfWork.BeginTransaction())
+            {
+                var connectedPersons = request.AsConnectedPersonsDatabaseModel();
+                try
+                {
+                    ValidateAddOrRemoveConnectedPersons(request);
+                    var connectionExist = _unitOfWork.connectedPersonRepository.GetIfConnectionExist(connectedPersons);
+                    if (request.IsDeleteAction)
+                    {
+                        if (connectionExist == null) { throw new DatabaseValidationException(ErrorResponses.ConnectionDontExist); }
+                        _unitOfWork.connectedPersonRepository.DeleteConnection(connectedPersons);
+                    }
+
+
+
+                    if (connectionExist == null)
+                    {
+                        _unitOfWork.connectedPersonRepository.AddConnectedPeople(connectedPersons);
+
+                    }
+                    else
+                    {
+                        if (connectionExist.IsDeleted)
+                        {
+                            _unitOfWork.connectedPersonRepository.UpdateConnection(connectedPersons);
+                        }
+                        else
+                        {
+                            throw new DatabaseValidationException(ErrorResponses.ConnectionExist);
+                        }
+                    }
+                    _unitOfWork.Save();
+                    _unitOfWork.CommitTransaction();
+                    return new AddOrRemoveConnectedPersonsResponse()
+                    {
+                        Success = true,
+                        ConnectedPersonID = request.ConnectedPersonID.Value,
+                        PhysicalPersonID = request.PhysicalPersonID.Value,
+                    };
+                }catch(Exception ex)
+                {
+                    _unitOfWork.RollbackTransaction();
+                    throw;
+                }
+            }
         }
 
         public async Task<UploadPersonImageResponse> AddOrUploadPersonImage(UploadPersonImageRequest request, string uploadFolder)
         {
-                var person=_unitOfWork.physicalPersonRepository.GetById(request.Id);
-                if (person != null) {
-                    var updatePhoto = this.UploadImage(request.PhysicalPersonImage, uploadFolder);
-                    _unitOfWork.physicalPersonRepository.UpdatePersonImageAddress(request.Id, updatePhoto);
+            var person = _unitOfWork.physicalPersonRepository.GetById(request.Id);
+            if (person != null)
+            {
+                var updatePhoto = this.UploadImage(request.PhysicalPersonImage, uploadFolder);
+                _unitOfWork.physicalPersonRepository.UpdatePersonImageAddress(request.Id, updatePhoto);
                 return new UploadPersonImageResponse()
                 {
                     PhysicalPersonID = request.Id,
                     ImageAddress = updatePhoto
                 };
-                }
-                else
-                {
-                    throw new DataNotFoundException(ValidationMessages.DataNotFound);
-                }
+            }
+            else
+            {
+                throw new DataNotFoundException(ErrorResponses.DataNotFound);
+            }
 
         }
 
         public async Task<AddPhysicalPersonResponse> AddPhysicalPerson(AddPhysicalPersonRequest addphysicalPersonRequest)
         {
-            var result= _unitOfWork.physicalPersonRepository.AddPhysicalPerson(addphysicalPersonRequest.AsDatabaseModel());
+            var result = _unitOfWork.physicalPersonRepository.AddPhysicalPerson(addphysicalPersonRequest.AsDatabaseModel());
             return result.AsViewModel();
+        }
+
+        public async Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id)
+        {
+
+            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(Id);
+            if (result != null)
+            {
+                result.IsDeleted = true;
+                _unitOfWork.Save();
+                return result.AsGetPhysicalPersonFullDataViewModel();
+            }
+            else
+            {
+                throw new DataNotFoundException(ErrorResponses.DataNotFound);
+            }
         }
 
         public async Task<EditPhysicalPersonResponse> EditPhysicalPerson(EditPhysicalPersonRequest editphysicalPersonRequest)
         {
-            using(var unitOfWork  = _unitOfWork)
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
                 try
                 {
-
-                    unitOfWork.BeginTransaction();
+                    
                     var updatePerson = _unitOfWork.physicalPersonRepository.EditPhysicalPerson(editphysicalPersonRequest.AsEditPhysicalPersonDatabaseModel());
                     foreach (var phone in editphysicalPersonRequest.PhoneNumbers)
                     {
                         if (!updatePerson.PhoneNumbers.Any(m => m.Id == phone.Id) && phone.Id != 0)
                         {
-                            throw new ValidationException("Phone Number with ID:" + phone.Id
-                                + " Don't Belong Person with ID:" + updatePerson.Id);
+                            throw new ValidationException(String.Format(ValidationMessages.PhoneNumberNotFound, phone.Id, updatePerson.Id));
                         }
                         else
                         {
@@ -75,19 +141,19 @@ namespace TbcTask.Infrastructure.Services
                         }
 
                     }
-                    
+
                     _unitOfWork.Save();
                     _unitOfWork.CommitTransaction();
                     _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(updatePerson.Id);
                     return updatePerson.AsEditPhysicalPersonViewModel();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _unitOfWork.RollbackTransaction();
                     throw ex;
                 }
             }
-            
+
         }
 
         public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(int id)
@@ -99,10 +165,10 @@ namespace TbcTask.Infrastructure.Services
             }
             else
             {
-                throw new DataNotFoundException(ValidationMessages.DataNotFound);
+                throw new DataNotFoundException(ErrorResponses.DataNotFound);
             }
         }
-        private string UploadImage(IFormFile file,string path)
+        private string UploadImage(IFormFile file, string path)
         {
             var fileName = $"{Guid.NewGuid().ToString()}_{file.FileName}";
             var directory = Path.Combine(path, "Uploads");
@@ -116,6 +182,14 @@ namespace TbcTask.Infrastructure.Services
                 file.CopyTo(fileStream);
             }
             return uploadsFolder;
+        }
+        private void ValidateAddOrRemoveConnectedPersons( AddOrRemoveConnectedPersonsRequest request)
+        {
+
+            var person = _unitOfWork.physicalPersonRepository.GetById(request.PhysicalPersonID.Value);
+            if (person == null || person.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.PhysicalPersonID.Value));
+            var connectedPerson = _unitOfWork.physicalPersonRepository.GetById(request.ConnectedPersonID.Value);
+            if (connectedPerson == null || connectedPerson.IsDeleted) throw new DataNotFoundException(String.Format(ErrorResponses.PersonNotFoundWIthID, request.PhysicalPersonID.Value));
         }
     }
 }

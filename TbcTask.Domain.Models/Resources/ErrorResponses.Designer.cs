@@ -22,14 +22,14 @@ namespace TbcTask.Domain.Models.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ValidationMessages {
+    public class ErrorResponses {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ValidationMessages() {
+        internal ErrorResponses() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TbcTask.Domain.Models.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TbcTask.Domain.Models.Resources.ValidationMessages", typeof(ValidationMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TbcTask.Domain.Models.Resources.ErrorResponses", typeof(ErrorResponses).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,38 @@ namespace TbcTask.Domain.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ველის &apos;{0}&apos; მინიმალური სიგრძე უნდა იყოს {1} სიმბოლო.
+        ///   Looks up a localized string similar to კავშირი ამ ორ ფიზიკურ პირს შორის არ არსებობს.
         /// </summary>
-        public static string MinLength {
+        public static string ConnectionDontExist {
             get {
-                return ResourceManager.GetString("MinLength", resourceCulture);
+                return ResourceManager.GetString("ConnectionDontExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to კავშირი ამ ორ ფიზიკურ პირს შორის უკვე არსებობს.
+        /// </summary>
+        public static string ConnectionExist {
+            get {
+                return ResourceManager.GetString("ConnectionExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ჩანაწერი ვერ მოიძებნა.
+        /// </summary>
+        public static string DataNotFound {
+            get {
+                return ResourceManager.GetString("DataNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ფიზიკური პირი ID ით {0} ვერ მოიძებნა.
+        /// </summary>
+        public static string PersonNotFoundWIthID {
+            get {
+                return ResourceManager.GetString("PersonNotFoundWIthID", resourceCulture);
             }
         }
         

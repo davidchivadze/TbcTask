@@ -117,14 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DataNotFound" xml:space="preserve">
-    <value>ჩანაწერი ვერ მოიძებნა</value>
-  </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
-  </data>
   <data name="MinLength" xml:space="preserve">
     <value>ველის '{0}' მინიმალური სიგრძე უნდა იყოს {1} სიმბოლო</value>
+  </data>
+  <data name="PhoneNumberNotFound" xml:space="preserve">
+    <value>ტელეფონის ნომერი ID ით :{0} არ ეკუთვნის ფიზიკურ პირს:{1}</value>
   </data>
   <data name="RequiredErrorMessage" xml:space="preserve">
     <value>ველის ' {0} ' შევსება სავალდებულოა</value>
