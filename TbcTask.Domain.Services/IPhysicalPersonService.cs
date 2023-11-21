@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using TbcTask.Domain.Models.Database;
-using TbcTask.Domain.Models.Requests;
+﻿using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Responses;
 
 namespace TbcTask.Domain.Services
 {
     public interface IPhysicalPersonService
     {
-        Task<AddPhysicalPersonResponse> AddPhysicalPerson(AddPhysicalPersonRequest addphysicalPersonRequest);
-        Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(GetPhysicalPersonFullDataRequest request);
-        Task<EditPhysicalPersonResponse> EditPhysicalPerson(EditPhysicalPersonRequest editphysicalPersonRequest);
-        Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImage(AddOrUpdatePersonImageRequest request,string uploadFolder);
-        Task<DeletePhysicalPersonResponse> DeletePhysicalPerson(DeletePhysicalPersonRequest request);
-        Task<AddConnectedPersonsResponse> AddConnectedPersons(AddConnectedPersonsRequest request);
-        Task<RemoveConnectedPersonsResponse> RemoveConnectedPersons(RemoveConnectedPersonsRequest request);
-        Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(SearchPhysicalPersonDataRequest request);
+        Task<AddPhysicalPersonResponse> AddPhysicalPersonAsync(AddPhysicalPersonRequest addphysicalPersonRequest);
+        Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullDataAsync(GetPhysicalPersonFullDataRequest request);
+        Task<EditPhysicalPersonResponse> EditPhysicalPersonAsync(EditPhysicalPersonRequest editphysicalPersonRequest);
+        Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImageAsync(AddOrUpdatePersonImageRequest request,string uploadFolder);
+        Task<DeletePhysicalPersonResponse> DeletePhysicalPersonAsync(DeletePhysicalPersonRequest request);
+        Task<AddConnectedPersonsResponse> AddConnectedPersonsAsync(AddConnectedPersonsRequest request);
+        Task<RemoveConnectedPersonsResponse> RemoveConnectedPersonsAsync(RemoveConnectedPersonsRequest request);
+        Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonDataAsync(SearchPhysicalPersonDataRequest request);
+        Task<List<PhysicalPersonConnectionReportResponse>> PhysicalPersonConnectionReportAsync();
     }
 }

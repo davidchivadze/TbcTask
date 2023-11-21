@@ -122,14 +122,5 @@ namespace TbcTask.Domain.Models.Resources {
                 return ResourceManager.GetString("PhoneNumberNotFound", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ველის &apos; {0} &apos; შევსება სავალდებულოა.
-        /// </summary>
-        public static string RequiredErrorMessage {
-            get {
-                return ResourceManager.GetString("RequiredErrorMessage", resourceCulture);
-            }
-        }
     }
 }

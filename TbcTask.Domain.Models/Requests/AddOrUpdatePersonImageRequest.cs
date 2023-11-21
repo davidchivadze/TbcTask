@@ -15,7 +15,7 @@ namespace TbcTask.Domain.Models.Requests
         [Required(ErrorMessageResourceName = "RequiredErrorMessage",ErrorMessageResourceType =typeof(ValidationMessages))]
         public int Id { get; set; }
         [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
-        [AllowedFileFormat(".jpg","png")]
+        [AllowedFileFormat("jpg","png")]
         public IFormFile PhysicalPersonImage { get; set; }
     }
 }

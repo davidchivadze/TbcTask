@@ -76,5 +76,25 @@ namespace TbcTask.Infrastructure.Repository
                 _DbSet.Update(item);
             }
         }
+
+        public dynamic ConnectedPersonsReport()
+        {
+            var result = _DbSet.Include(m => m.PersonConnectionType)
+            .Where(cp => !cp.IsDeleted)
+            .GroupBy(cp => new {cp.PhysicialPersonId }).Select(group => new
+            {
+                a=group.Key
+            }).ToList();
+            //.Select(group => new
+            //{
+            //    PersonID = group.FirstOrDefault().PhysicialPersonId,
+            //    ConnectionTypeName = group.FirstOrDefault().PersonConnectionType.Name,
+            //    ConnectedPersonsCount = group.Count(),
+            //    UniquePhysicialPersonsCount = group.Select(cp => cp.PhysicialPersonId).Distinct().Count()
+            //})
+            //.OrderByDescending(result => result.ConnectedPersonsCount)
+            //.ToList();
+            return result;
+        }
     }
 }

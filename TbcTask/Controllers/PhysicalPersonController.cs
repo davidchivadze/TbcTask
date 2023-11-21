@@ -22,12 +22,12 @@ namespace TbcTask.Controllers
             _WebHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet("GetPhysicalPersonFullData")]
-        public async Task<Result<GetPhysicalPersonFullDataResponse>> GetPhysicalPersonFullData([FromQuery]GetPhysicalPersonFullDataRequest request)
+        [HttpGet("GetPhysicalPersonFullDataAsync")]
+        public async Task<Result<GetPhysicalPersonFullDataResponse>> GetPhysicalPersonFullDataAsync([FromQuery]GetPhysicalPersonFullDataRequest request)
         {
             try
             {
-                var result =await _PhysicalPersonService.GetPhysicalPersonFullData(request);
+                var result =await _PhysicalPersonService.GetPhysicalPersonFullDataAsync(request);
                 return Result<GetPhysicalPersonFullDataResponse>.Ok(result);
             }
             catch (ApiException ex)
@@ -39,12 +39,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpGet("SearchPhysicalPerson")]
-        public async Task<Result<List<SearchPhysicalPersonDataResponse>>> SearchPhysicalPersonData([FromQuery]SearchPhysicalPersonDataRequest request)
+        [HttpGet("SearchPhysicalPersonAsync")]
+        public async Task<Result<List<SearchPhysicalPersonDataResponse>>> SearchPhysicalPersonDataAsync([FromQuery]SearchPhysicalPersonDataRequest request)
         {
             try
             {
-              var result = await _PhysicalPersonService.SearchPhysicalPersonData(request);
+              var result = await _PhysicalPersonService.SearchPhysicalPersonDataAsync(request);
                 return Result<List<SearchPhysicalPersonDataResponse>>.Ok(result);
             }
             catch (ApiException ex)
@@ -56,13 +56,30 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-
-        [HttpPut("AddOrUpdateImage")]
-        public async Task<Result<AddOrUpdatePersonImageResponse>> AddOrUpdateImage([FromForm]AddOrUpdatePersonImageRequest request)
+        [HttpGet("GetPhysicalPersonConnectionReportAsync")]
+        public async Task<Result<List<PhysicalPersonConnectionReportResponse>>> GetPhysicalPersonConnectionReportAsync()
         {
             try
             {
-                var result = await _PhysicalPersonService.AddOrUploadPersonImage(request,String.IsNullOrEmpty(_WebHostEnvironment.WebRootPath)?
+                var result = await _PhysicalPersonService.PhysicalPersonConnectionReportAsync();
+                return Result<List<PhysicalPersonConnectionReportResponse>>.Ok(result);
+            }
+            catch (ApiException ex)
+            {
+                return Result<List<PhysicalPersonConnectionReportResponse>>.ReturnCode(ex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPut("AddOrUpdateImageAsync")]
+        public async Task<Result<AddOrUpdatePersonImageResponse>> AddOrUpdateImageAsync([FromForm]AddOrUpdatePersonImageRequest request)
+        {
+            try
+            {
+                var result = await _PhysicalPersonService.AddOrUploadPersonImageAsync(request,String.IsNullOrEmpty(_WebHostEnvironment.WebRootPath)?
                     _WebHostEnvironment.ContentRootPath:_WebHostEnvironment.WebRootPath);
                 return Result<AddOrUpdatePersonImageResponse>.Ok(result);
             }catch(ApiException ex)
@@ -74,12 +91,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpDelete("DeletePhysicalPerson")]
-        public async Task<Result<DeletePhysicalPersonResponse>> DeletePhysicalPerson(DeletePhysicalPersonRequest request)
+        [HttpDelete("DeletePhysicalPersonAsync")]
+        public async Task<Result<DeletePhysicalPersonResponse>> DeletePhysicalPersonAsync(DeletePhysicalPersonRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.DeletePhysicalPerson(request);
+                var result = await _PhysicalPersonService.DeletePhysicalPersonAsync(request);
                 return Result<DeletePhysicalPersonResponse>.Ok(result);
             }catch(ApiException ex)
             {
@@ -89,12 +106,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpDelete("DeleteConnection")]
-        public async Task<Result<RemoveConnectedPersonsResponse>> RemoveConnectedPersons(RemoveConnectedPersonsRequest request)
+        [HttpDelete("DeleteConnectionAsync")]
+        public async Task<Result<RemoveConnectedPersonsResponse>> RemoveConnectedPersonsAsync(RemoveConnectedPersonsRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.RemoveConnectedPersons(request);
+                var result = await _PhysicalPersonService.RemoveConnectedPersonsAsync(request);
                 return Result<RemoveConnectedPersonsResponse>.Ok(result);
             }
             catch (ApiException ex)
@@ -106,12 +123,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpPost("AddConnectedPersons")]
-        public async Task<Result<AddConnectedPersonsResponse>> AddConnectedPersons(AddConnectedPersonsRequest request)
+        [HttpPost("AddConnectedPersonsAsync")]
+        public async Task<Result<AddConnectedPersonsResponse>> AddConnectedPersonsAsync(AddConnectedPersonsRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.AddConnectedPersons(request);
+                var result = await _PhysicalPersonService.AddConnectedPersonsAsync(request);
                 return Result<AddConnectedPersonsResponse>.Ok(result);
             }
             catch (ApiException ex)
@@ -123,12 +140,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpPost("AddPhysicalPerson")]
-        public async Task<Result<AddPhysicalPersonResponse>> AddPhysicalPerson([FromBody] AddPhysicalPersonRequest request)
+        [HttpPost("AddPhysicalPersonAsync")]
+        public async Task<Result<AddPhysicalPersonResponse>> AddPhysicalPersonAsync([FromBody] AddPhysicalPersonRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.AddPhysicalPerson(request);
+                var result = await _PhysicalPersonService.AddPhysicalPersonAsync(request);
                 return Result<AddPhysicalPersonResponse>.Ok(result);
             }
             catch (ApiException ex)
@@ -140,12 +157,12 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpPatch("EditPhysicalPerson")]
-        public async Task<Result<EditPhysicalPersonResponse>> EditPhysicalPerson([FromBody] EditPhysicalPersonRequest request)
+        [HttpPatch("EditPhysicalPersonAsync")]
+        public async Task<Result<EditPhysicalPersonResponse>> EditPhysicalPersonAsync([FromBody] EditPhysicalPersonRequest request)
         {
             try
             {
-                var result = await _PhysicalPersonService.EditPhysicalPerson(request);
+                var result = await _PhysicalPersonService.EditPhysicalPersonAsync(request);
                 return Result<EditPhysicalPersonResponse>.Ok(result);
             }
             catch (ApiException ex)

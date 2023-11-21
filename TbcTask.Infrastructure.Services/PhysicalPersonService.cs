@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TbcTask.Domain.Models.Database;
+using TbcTask.Domain.Models.Database.Reports;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Resources;
@@ -19,7 +20,7 @@ namespace TbcTask.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<AddConnectedPersonsResponse> AddConnectedPersons(AddConnectedPersonsRequest request)
+        public async Task<AddConnectedPersonsResponse> AddConnectedPersonsAsync(AddConnectedPersonsRequest request)
         {
             using (var transaction=_unitOfWork.BeginTransaction())
             {
@@ -63,7 +64,7 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImage(AddOrUpdatePersonImageRequest request, string uploadFolder)
+        public async Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImageAsync(AddOrUpdatePersonImageRequest request, string uploadFolder)
         {
             var person = _unitOfWork.physicalPersonRepository.GetById(request.Id);
             if (person != null)
@@ -83,13 +84,13 @@ namespace TbcTask.Infrastructure.Services
 
         }
 
-        public async Task<AddPhysicalPersonResponse> AddPhysicalPerson(AddPhysicalPersonRequest addphysicalPersonRequest)
+        public async Task<AddPhysicalPersonResponse> AddPhysicalPersonAsync(AddPhysicalPersonRequest addphysicalPersonRequest)
         {
             var result = _unitOfWork.physicalPersonRepository.AddPhysicalPerson(addphysicalPersonRequest.AsDatabaseModel());
             return result.AsAddPhysicalPersonViewModel();
         }
 
-        public async Task<DeletePhysicalPersonResponse> DeletePhysicalPerson(DeletePhysicalPersonRequest request)
+        public async Task<DeletePhysicalPersonResponse> DeletePhysicalPersonAsync(DeletePhysicalPersonRequest request)
         {
             using (var transaction = _unitOfWork.BeginTransaction())
             {
@@ -122,7 +123,7 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<EditPhysicalPersonResponse> EditPhysicalPerson(EditPhysicalPersonRequest editphysicalPersonRequest)
+        public async Task<EditPhysicalPersonResponse> EditPhysicalPersonAsync(EditPhysicalPersonRequest editphysicalPersonRequest)
         {
             using (var transaction = _unitOfWork.BeginTransaction())
             {
@@ -164,7 +165,7 @@ namespace TbcTask.Infrastructure.Services
 
         }
 
-        public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(GetPhysicalPersonFullDataRequest request)
+        public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullDataAsync(GetPhysicalPersonFullDataRequest request)
         {
             var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(request.Id);
             if (result != null)
@@ -177,7 +178,7 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<RemoveConnectedPersonsResponse> RemoveConnectedPersons(RemoveConnectedPersonsRequest request)
+        public async Task<RemoveConnectedPersonsResponse> RemoveConnectedPersonsAsync(RemoveConnectedPersonsRequest request)
         {
             using (var transaction = _unitOfWork.BeginTransaction())
             {
@@ -209,7 +210,7 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(SearchPhysicalPersonDataRequest request)
+        public async Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonDataAsync(SearchPhysicalPersonDataRequest request)
         {
             var result = _unitOfWork.physicalPersonRepository.SearchPhysicalPersonData(request.Key,(request.CountPerPage*(request.Page-1)),request.CountPerPage);
             if(result.Count == 0)
@@ -218,6 +219,11 @@ namespace TbcTask.Infrastructure.Services
             }
             var returnResult = result.Select(m => m.AsSearchPhysicalPersonDataViewModel()).ToList();
             return returnResult;
+        }
+        public async Task<List<PhysicalPersonConnectionReportResponse>> PhysicalPersonConnectionReportAsync()
+        {
+            var result=_unitOfWork.physicalPersonRepository.PhysicalPersonConnectionReport();
+            return result.Data.Select(m => m.AsPhysicalPersonConnectionReportViewModel()).ToList();
         }
 
         private void ValidateAddOrRemoveConnectedPersons(ConnectedPersons request)

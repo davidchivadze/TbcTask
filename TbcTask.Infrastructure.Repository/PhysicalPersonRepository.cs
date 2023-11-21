@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TbcTask.Domain.Models.Database;
+using TbcTask.Domain.Models.Database.Reports;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Resources;
 using TbcTask.Domain.Repository;
@@ -62,6 +63,26 @@ namespace TbcTask.Infrastructure.Repository
                    .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
                 .FirstOrDefault();
             return result;
+        }
+
+        public PhysicalPersonConnectionReport PhysicalPersonConnectionReport()
+        {
+            var result = _DbSet.Include(m => m.ConnectedPersons).ThenInclude(m=>m.PersonConnectionType)
+            .Where(m => m.ConnectedPersons != null && m.ConnectedPersons.Any()).ToList()
+            .SelectMany(pp => pp.ConnectedPersons)
+            .GroupBy(cp => new { cp.PhysicialPersonId, cp.PersonConnectionType })
+            .Select(group => new PhysicalPersonConnectionItem
+             {
+                 PhysicalPersonID = group.Key.PhysicialPersonId,
+                 ConnectionType = group.Key.PersonConnectionType.Name, // Assuming PersonConnectionType has a Name property
+                 CountOfConnections = group.Count()
+             })
+            .OrderBy(result => result.PhysicalPersonID)
+            .ToList();
+            return new PhysicalPersonConnectionReport()
+            {
+                Data = result
+            };
         }
 
         public List<PhysicalPerson> SearchPhysicalPersonData(string key, int skip, int take)

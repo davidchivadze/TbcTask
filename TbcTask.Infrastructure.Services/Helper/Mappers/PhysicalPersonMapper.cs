@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TbcTask.Domain.Models.Database;
+using TbcTask.Domain.Models.Database.Reports;
 using TbcTask.Domain.Models.Requests;
 using TbcTask.Domain.Models.Responses;
 using TbcTask.Infrastructure.Services.Helper.FileManager;
@@ -147,6 +148,15 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 Image = !String.IsNullOrEmpty(model.ImageAddress) ? FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress) : "",
                 PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
+            };
+        }
+        public static PhysicalPersonConnectionReportResponse AsPhysicalPersonConnectionReportViewModel(this PhysicalPersonConnectionItem model)
+        {
+            return new PhysicalPersonConnectionReportResponse()
+            {
+                ConnectionType = model.ConnectionType,
+                CountOfConnections = model.CountOfConnections,
+                PhysicalPersonID = model.PhysicalPersonID,
             };
         }
     }

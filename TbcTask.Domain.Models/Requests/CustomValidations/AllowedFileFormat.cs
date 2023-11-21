@@ -24,7 +24,7 @@ namespace TbcTask.Domain.Models.Requests.CustomValidations
             {
                 string fileExtension = file.FileName.Split('.').LastOrDefault();
 
-                if (!allowedFormats.Any(format => fileExtension.Equals(format.ToLower(), StringComparison.OrdinalIgnoreCase)))
+                if (!allowedFormats.Any(format => fileExtension.ToLower().Equals(format, StringComparison.OrdinalIgnoreCase)))
                 {
                     return new ValidationResult(String.Format(ValidationMessages.AllowedFileFormat,string.Join(", ",allowedFormats)));
                 }

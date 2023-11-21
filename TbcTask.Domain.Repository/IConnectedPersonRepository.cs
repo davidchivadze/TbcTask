@@ -14,5 +14,6 @@ namespace TbcTask.Domain.Repository
         ConnectedPersons GetIfConnectionExist(ConnectedPersons connectedPersons);
         void UpdateConnection(ConnectedPersons connectedPersons);
         void DeleteConnection(ConnectedPersons connectedPersons);
+        dynamic ConnectedPersonsReport();
     }
 }
