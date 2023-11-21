@@ -8,12 +8,12 @@ namespace TbcTask.Domain.Services
     public interface IPhysicalPersonService
     {
         Task<AddPhysicalPersonResponse> AddPhysicalPerson(AddPhysicalPersonRequest addphysicalPersonRequest);
-        Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(int id);
+        Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(GetPhysicalPersonFullDataRequest request);
         Task<EditPhysicalPersonResponse> EditPhysicalPerson(EditPhysicalPersonRequest editphysicalPersonRequest);
-        Task<UploadPersonImageResponse> AddOrUploadPersonImage(UploadPersonImageRequest request,string uploadFolder);
-        Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id);
+        Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImage(AddOrUpdatePersonImageRequest request,string uploadFolder);
+        Task<DeletePhysicalPersonResponse> DeletePhysicalPerson(DeletePhysicalPersonRequest request);
         Task<AddConnectedPersonsResponse> AddConnectedPersons(AddConnectedPersonsRequest request);
         Task<RemoveConnectedPersonsResponse> RemoveConnectedPersons(RemoveConnectedPersonsRequest request);
-        Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(string request);
+        Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(SearchPhysicalPersonDataRequest request);
     }
 }

@@ -61,6 +61,33 @@ namespace TbcTask.Domain.Models.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to დასაშვები ფაილის ფორმატებია: {0}.
+        /// </summary>
+        public static string AllowedFileFormat {
+            get {
+                return ResourceManager.GetString("AllowedFileFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ველის &apos;{0}&apos; დასაშვები მნიშვნელობებია 1 - კაცი, 2- ქალი.
+        /// </summary>
+        public static string GenderMinMax {
+            get {
+                return ResourceManager.GetString("GenderMinMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ველის &apos;{0}&apos; მაქსიმალური სიგრძე უნდა იყოს {1} სიმბოლო.
+        /// </summary>
+        public static string MaxLength {
+            get {
+                return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ველის &apos;{0}&apos; მინიმალური სიგრძე უნდა იყოს {1} სიმბოლო.
         /// </summary>
         public static string MinLength {
@@ -70,11 +97,47 @@ namespace TbcTask.Domain.Models.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ფიზიკური პირის ასაკი უნდა იყოს მინიმუმ 18 წელი.
+        /// </summary>
+        public static string PersonAgeValidation {
+            get {
+                return ResourceManager.GetString("PersonAgeValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ტელეფონის ნომერი ID ით :{0} არ ეკუთვნის ფიზიკურ პირს:{1}.
         /// </summary>
         public static string PhoneNumberNotFound {
             get {
                 return ResourceManager.GetString("PhoneNumberNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ტელეფონის ნომრის ტიპის დასაშვები მნიშვნელობებია 1 -სახლი, 2-ოფისი, 3-მობილური.
+        /// </summary>
+        public static string PhoneTypeRange {
+            get {
+                return ResourceManager.GetString("PhoneTypeRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ველი &apos;{0}&apos; უნდა შეიცავდეს 11 ციფრს.
+        /// </summary>
+        public static string PrivateNumberNotValid {
+            get {
+                return ResourceManager.GetString("PrivateNumberNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ველის &apos;{0}&apos; მნიშვნელობა შესაძლებელია იცვლებოდეს  {1}-დან {2}-მდე.
+        /// </summary>
+        public static string Range {
+            get {
+                return ResourceManager.GetString("Range", resourceCulture);
             }
         }
         

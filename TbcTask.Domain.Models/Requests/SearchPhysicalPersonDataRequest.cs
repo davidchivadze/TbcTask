@@ -13,8 +13,11 @@ namespace TbcTask.Domain.Models.Requests
     {
         [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
         public string Key { get; set; }
+        [Range(1,int.MaxValue,ErrorMessageResourceType =typeof(ValidationMessages),ErrorMessageResourceName ="Range")]
         public int Page { get; set; } = 1;
+        [Range(1,20, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "Range")]
         public int CountPerPage { get; set; } = 5;
+
 
     }
 }

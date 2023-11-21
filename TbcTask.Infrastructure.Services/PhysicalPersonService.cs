@@ -52,8 +52,8 @@ namespace TbcTask.Infrastructure.Services
                     return new AddConnectedPersonsResponse()
                     {
                         Success = true,
-                        ConnectedPersonID = request.ConnectedPersonID.Value,
-                        PhysicalPersonID = request.PhysicalPersonID.Value,
+                        ConnectedPersonID = request.ConnectedPersonID,
+                        PhysicalPersonID = request.PhysicalPersonID,
                     };
                 }catch(Exception ex)
                 {
@@ -63,14 +63,14 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<UploadPersonImageResponse> AddOrUploadPersonImage(UploadPersonImageRequest request, string uploadFolder)
+        public async Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImage(AddOrUpdatePersonImageRequest request, string uploadFolder)
         {
             var person = _unitOfWork.physicalPersonRepository.GetById(request.Id);
             if (person != null)
             {
                 var updatePhoto = FileManager.StoreFileOnServer(request.PhysicalPersonImage, uploadFolder);
                 _unitOfWork.physicalPersonRepository.UpdatePersonImageAddress(request.Id, updatePhoto);
-                return new UploadPersonImageResponse()
+                return new AddOrUpdatePersonImageResponse()
                 {
                     PhysicalPersonID = request.Id,
                     ImageAddress = updatePhoto
@@ -89,19 +89,36 @@ namespace TbcTask.Infrastructure.Services
             return result.AsAddPhysicalPersonViewModel();
         }
 
-        public async Task<GetPhysicalPersonFullDataResponse> DeletePhysicalPerson(int Id)
+        public async Task<DeletePhysicalPersonResponse> DeletePhysicalPerson(DeletePhysicalPersonRequest request)
         {
-
-            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(Id);
-            if (result != null)
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
-                result.IsDeleted = true;
-                _unitOfWork.Save();
-                return result.AsGetPhysicalPersonFullDataViewModel();
-            }
-            else
-            {
-                throw new DataNotFoundException(ErrorResponses.DataNotFound);
+                try
+                {
+                    var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(request.Id);
+                    if (result != null)
+                    {
+                        result.IsDeleted = true;
+                        if (result.ConnectedPersons != null && result.ConnectedPersons.Count > 0)
+                        {
+                            foreach(var person in result.ConnectedPersons)
+                            {
+                                _unitOfWork.connectedPersonRepository.DeleteConnection(person);
+                            }
+                        }
+                        _unitOfWork.Save();
+                        _unitOfWork.CommitTransaction();
+                        return result.AsDeletePhysicalPersonViewModel();
+                    }
+                    else
+                    {
+                        throw new DataNotFoundException(ErrorResponses.DataNotFound);
+                    }
+                }catch(Exception ex)
+                {
+                    _unitOfWork.RollbackTransaction();
+                    throw new DatabaseValidationException(ex.Message);
+                }
             }
         }
 
@@ -117,17 +134,17 @@ namespace TbcTask.Infrastructure.Services
                     {
                         if (!updatePerson.PhoneNumbers.Any(m => m.Id == phone.Id) && phone.Id != 0)
                         {
-                            throw new ValidationException(String.Format(ValidationMessages.PhoneNumberNotFound, phone.Id, updatePerson.Id));
+                            throw new DatabaseValidationException(String.Format(ValidationMessages.PhoneNumberNotFound, phone.Id, updatePerson.Id));
                         }
                         else
                         {
                             if (phone.Id != 0)
                             {
-                                _unitOfWork.phoneNumberRepository.UpdatePhoneNumber(phone.AsEditPhoneDatabaseModel(updatePerson.Id));
+                                _unitOfWork.phoneNumberRepository.UpdatePhoneNumber(phone.AsPhoneDatabaseModel(updatePerson.Id));
                             }
                             else
                             {
-                                _unitOfWork.phoneNumberRepository.Add(phone.AsEditPhoneDatabaseModel(updatePerson.Id));
+                                _unitOfWork.phoneNumberRepository.Add(phone.AsPhoneDatabaseModel(updatePerson.Id));
                             }
                         }
 
@@ -147,9 +164,9 @@ namespace TbcTask.Infrastructure.Services
 
         }
 
-        public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(int id)
+        public async Task<GetPhysicalPersonFullDataResponse> GetPhysicalPersonFullData(GetPhysicalPersonFullDataRequest request)
         {
-            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(id);
+            var result = _unitOfWork.physicalPersonRepository.GetPhysicalPersonFullData(request.Id);
             if (result != null)
             {
                 return result.AsGetPhysicalPersonFullDataViewModel();
@@ -192,9 +209,9 @@ namespace TbcTask.Infrastructure.Services
             }
         }
 
-        public async Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(string request)
+        public async Task<List<SearchPhysicalPersonDataResponse>> SearchPhysicalPersonData(SearchPhysicalPersonDataRequest request)
         {
-            var result = _unitOfWork.physicalPersonRepository.SearchPhysicalPersonData(request);
+            var result = _unitOfWork.physicalPersonRepository.SearchPhysicalPersonData(request.Key,(request.CountPerPage*(request.Page-1)),request.CountPerPage);
             if(result.Count == 0)
             {
                 throw new DataNotFoundException(ErrorResponses.DataNotFound);

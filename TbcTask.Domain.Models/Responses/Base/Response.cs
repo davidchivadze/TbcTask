@@ -15,7 +15,7 @@ namespace TbcTask.Domain.Models.Responses
         }
         public Response(HttpStatusCode statusCode,List<string> message)
         {
-            statusCode = statusCode;
+            StatusCode = statusCode;
              Message=message;
         }
         public Response(HttpStatusCode statusCode,string message)

@@ -42,9 +42,9 @@ namespace TbcTask.Infrastructure.Services.Helper.FileManager
                 {
                     return $"data:image/png;base64,{base64String}";
                 }
-                if (fileName.ToUpper().EndsWith(".JPG"))
+                if (fileName.ToUpper().EndsWith(".JPG")||fileName.ToUpper().EndsWith(".JPEG"))
                 {
-                    return $"data:image/png;base64,{base64String}";
+                    return $"data:image/jpeg;base64,{base64String}";
                 }
                 else
                 {

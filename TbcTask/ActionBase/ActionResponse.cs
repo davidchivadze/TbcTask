@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Any;
 using System.Net;
 using TbcTask.Domain.Models.Exceptions;
 using TbcTask.Domain.Models.Resources;
-using TbcTask.Domain.Models.Responses;
 
 namespace TbcTask.Domain.Models.Responses
 {

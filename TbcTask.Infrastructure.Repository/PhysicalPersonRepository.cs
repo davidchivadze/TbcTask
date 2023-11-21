@@ -51,7 +51,7 @@ namespace TbcTask.Infrastructure.Repository
         public PhysicalPerson GetPhysicalPersonFullData(int Id)
         {
             var result = _DbSet.
-                 Where(m => m.Id == Id&&m.IsDeleted==false)
+                 Where(m => m.Id == Id && m.IsDeleted == false)
                  .Include(m => m.Gender)
                  .Include(m => m.City)
                  .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType).
@@ -59,17 +59,21 @@ namespace TbcTask.Infrastructure.Repository
                 .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.Gender)
                  .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.City)
                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers)
-                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m=>m.PhoneType)
+                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
                 .FirstOrDefault();
             return result;
         }
 
-        public List<PhysicalPerson> SearchPhysicalPersonData(string request)
+        public List<PhysicalPerson> SearchPhysicalPersonData(string key, int skip, int take)
         {
-            var result = _DbSet.Where(m => m.FirstName.Contains(request) || m.LastName.Contains(request) || m.PrivateNumber.Contains(request))
+
+            var result = _DbSet
                 .Include(m => m.City)
                 .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
                 .Include(m => m.Gender)
+                .Where(m => m.FirstName.Contains(key) || m.LastName.Contains(key) || m.PrivateNumber.Contains(key)
+                || m.City.Name == key || m.Gender.Name == key || m.PhoneNumbers.Any(m => m.PhoneNumber == key)
+            ).OrderBy(m => m.Id).Skip(skip).Take(take)
                 .ToList();
               return result;
         }

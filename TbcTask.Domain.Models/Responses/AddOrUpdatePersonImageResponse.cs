@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TbcTask.Domain.Models.Responses
 {
-    public class UploadPersonImageResponse
+    public class AddOrUpdatePersonImageResponse
     {
         public int PhysicalPersonID { get; set; }
         public string ImageAddress { get; set; }

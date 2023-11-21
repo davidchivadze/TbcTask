@@ -5,9 +5,6 @@ namespace TbcTask.Domain.Models.Database
 {
     public class ConnectedPersons: BaseDatabase
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         public int PersonConnectionTypeID { get; set; }
         public int PhysicialPersonId { get;set; }
         public int ConnectedPersonId {  get; set; }

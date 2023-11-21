@@ -14,18 +14,18 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
         {
             return new ConnectedPersons
             {
-                ConnectedPersonId = model.ConnectedPersonID.Value,
-                PhysicialPersonId = model.PhysicalPersonID.Value,
-                PersonConnectionTypeID = model.ConnectionTypeID.Value,
+                ConnectedPersonId = model.ConnectedPersonID,
+                PhysicialPersonId = model.PhysicalPersonID,
+                PersonConnectionTypeID = model.ConnectionTypeID,
             };
         }
         public static ConnectedPersons AsConnectedPersonDatabaseModel(this RemoveConnectedPersonsRequest model)
         {
             return new ConnectedPersons()
             {
-                ConnectedPersonId = model.ConnectedPersonID.Value,
-                PhysicialPersonId = model.PhysicalPersonID.Value,
-                PersonConnectionTypeID = model.ConnectionTypeID.Value,
+                ConnectedPersonId = model.ConnectedPersonID,
+                PhysicialPersonId = model.PhysicalPersonID,
+                PersonConnectionTypeID = model.ConnectionTypeID,
             };
         }
     }

@@ -6,13 +6,6 @@ namespace TbcTask.Infrastructure.Store
 {
     public class PersonDbContext : DbContext
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=DESKTOP-2L4TSA8\\DAVITI;Database=Person;Integrated Security=True;");
-        //    }
-        //}
         public PersonDbContext(DbContextOptions<PersonDbContext> options) : base(options)
         {
             ChangeTracker.LazyLoadingEnabled = false;

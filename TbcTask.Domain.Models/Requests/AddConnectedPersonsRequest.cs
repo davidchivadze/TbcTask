@@ -10,11 +10,11 @@ namespace TbcTask.Domain.Models.Requests
 {
     public class AddConnectedPersonsRequest
     {
-        [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
-        public int? ConnectionTypeID { get; set; }
-        [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
-        public int? PhysicalPersonID { get; set; }
-        [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
-        public int? ConnectedPersonID { get; set;}
+        [Range(1, int.MaxValue, ErrorMessageResourceName = ("RequiredErrorMessage"), ErrorMessageResourceType = typeof(ValidationMessages))]
+        public int ConnectionTypeID { get; set; }
+        [Range(1, int.MaxValue, ErrorMessageResourceName = ("RequiredErrorMessage"), ErrorMessageResourceType = typeof(ValidationMessages))]
+        public int PhysicalPersonID { get; set; }
+        [Range(1, int.MaxValue, ErrorMessageResourceName = ("RequiredErrorMessage"), ErrorMessageResourceType = typeof(ValidationMessages))]
+        public int ConnectedPersonID { get; set;}
     }
 }

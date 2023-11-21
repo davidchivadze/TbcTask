@@ -85,11 +85,11 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
 
             };
         }
-        public static Phone AsEditPhoneDatabaseModel(this AddOrEditPhoneNumberRequest model, int personID)
+        public static Phone AsPhoneDatabaseModel(this EditPhoneNumberRequest model, int personID)
         {
             return new Phone()
             {
-                Id = model.Id,
+                Id = model.Id??0,
                 PhoneNumber = model.PhoneNumber,
                 PhoneTypeID = model.TypeID,
                 PhysicalPersonID = personID
@@ -131,6 +131,22 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
                 PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
                 PrivateNumber = model.PrivateNumber,
                 Image = String.IsNullOrEmpty(model.ImageAddress) ? "" : FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress)
+            };
+        }
+        public static DeletePhysicalPersonResponse AsDeletePhysicalPersonViewModel(this PhysicalPerson model)
+        {
+            return new DeletePhysicalPersonResponse()
+            {
+                Id = model.Id,
+                City = model.City?.Name,
+                //ConnectedPersons = model.ConnectedPersons?.Select(m => m.PhysicialPerson.AsConnectedPersonViewModel()).ToList(),
+                DateOfBirth = model.DateOfBirth,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Gender = model.Gender?.Name,
+                Image = !String.IsNullOrEmpty(model.ImageAddress) ? FileManager.FileManager.GetFileFromServer("Uploads", model.ImageAddress) : "",
+                PhoneNumbers = model.PhoneNumbers?.Select(m => m.AsPhoneNumberViewModel()).ToList(),
+                PrivateNumber = model.PrivateNumber,
             };
         }
     }
