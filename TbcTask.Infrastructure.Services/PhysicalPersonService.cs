@@ -67,7 +67,7 @@ namespace TbcTask.Infrastructure.Services
         public async Task<AddOrUpdatePersonImageResponse> AddOrUploadPersonImageAsync(AddOrUpdatePersonImageRequest request, string uploadFolder)
         {
             var person = _unitOfWork.physicalPersonRepository.GetById(request.Id);
-            if (person != null)
+            if (person != null&&person?.IsDeleted==false)
             {
                 var updatePhoto = FileManager.StoreFileOnServer(request.PhysicalPersonImage, uploadFolder);
                 _unitOfWork.physicalPersonRepository.UpdatePersonImageAddress(request.Id, updatePhoto);

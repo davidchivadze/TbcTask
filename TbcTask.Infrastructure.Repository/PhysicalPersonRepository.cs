@@ -60,7 +60,7 @@ namespace TbcTask.Infrastructure.Repository
                 .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.Gender)
                  .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.City)
                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers)
-                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
+                   .Include(m => m.ConnectedPersons).ThenInclude(m => m.PhysicialPerson).ThenInclude(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)                
                 .FirstOrDefault();
             return result;
         }
@@ -69,7 +69,7 @@ namespace TbcTask.Infrastructure.Repository
         {
             var result = _DbSet.Include(m => m.ConnectedPersons).ThenInclude(m=>m.PersonConnectionType)
             .Where(m => m.ConnectedPersons != null && m.ConnectedPersons.Any()).ToList()
-            .SelectMany(pp => pp.ConnectedPersons)
+            .SelectMany(pp => pp.ConnectedPersons).Where(m => m.IsDeleted == false)
             .GroupBy(cp => new { cp.PhysicialPersonId, cp.PersonConnectionType })
             .Select(group => new PhysicalPersonConnectionItem
              {
@@ -92,8 +92,8 @@ namespace TbcTask.Infrastructure.Repository
                 .Include(m => m.City)
                 .Include(m => m.PhoneNumbers).ThenInclude(m => m.PhoneType)
                 .Include(m => m.Gender)
-                .Where(m => m.FirstName.Contains(key) || m.LastName.Contains(key) || m.PrivateNumber.Contains(key)
-                || m.City.Name == key || m.Gender.Name == key || m.PhoneNumbers.Any(m => m.PhoneNumber == key)
+                .Where(m => !m.IsDeleted&&( m.FirstName.Contains(key) || m.LastName.Contains(key) || m.PrivateNumber.Contains(key)
+                || m.City.Name == key || m.Gender.Name == key || m.PhoneNumbers.Any(m => m.PhoneNumber == key))
             ).OrderBy(m => m.Id).Skip(skip).Take(take)
                 .ToList();
               return result;

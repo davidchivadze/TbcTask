@@ -47,7 +47,7 @@ namespace TbcTask.Infrastructure.Services.Helper.Mappers
             {
                 Id = model.Id,
                 City = model.City?.Name,
-                ConnectedPersons = model.ConnectedPersons?.Select(m => m.PhysicialPerson.AsConnectedPersonViewModel()).ToList(),
+                ConnectedPersons = model.ConnectedPersons?.Where(m=>m.IsDeleted==false).Select(m => m.PhysicialPerson.AsConnectedPersonViewModel()).ToList(),
                 DateOfBirth = model.DateOfBirth,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
