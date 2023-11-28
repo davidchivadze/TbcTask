@@ -12,7 +12,8 @@ namespace TbcTask.Domain.Models.Requests
     {
         [Range(1, 3, ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "PhoneTypeRange")]
         public int TypeID { get;set; }
-        [Range(4, 50, ErrorMessageResourceName = "Range", ErrorMessageResourceType = typeof(ValidationMessages))]
+        [MinLength(4, ErrorMessageResourceName = "MinLength", ErrorMessageResourceType = typeof(ValidationMessages))]
+        [MaxLength(50, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(ValidationMessages))]
         [RegularExpression("^[0-9]+$")]
         public string PhoneNumber { get;set; }
     }

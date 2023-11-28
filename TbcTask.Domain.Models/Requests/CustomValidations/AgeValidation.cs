@@ -15,7 +15,7 @@ namespace TbcTask.Domain.Models.Requests.CustomValidations
             {
                 DateTime minDate = DateTime.Now.AddYears(-18);
 
-                if (birthDate >= minDate)
+                if (birthDate <= minDate)
                 {
                     return ValidationResult.Success;
                 }

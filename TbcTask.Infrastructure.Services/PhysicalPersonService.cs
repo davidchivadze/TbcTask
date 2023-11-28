@@ -87,6 +87,7 @@ namespace TbcTask.Infrastructure.Services
         public async Task<AddPhysicalPersonResponse> AddPhysicalPersonAsync(AddPhysicalPersonRequest addphysicalPersonRequest)
         {
             var result = _unitOfWork.physicalPersonRepository.AddPhysicalPerson(addphysicalPersonRequest.AsDatabaseModel());
+            _unitOfWork.Save();
             return result.AsAddPhysicalPersonViewModel();
         }
 
