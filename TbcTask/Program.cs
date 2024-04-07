@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Net;
 using TbcTask.Domain.Models.Resources;
 using TbcTask.Domain.Repository;
 using TbcTask.Domain.Services;
@@ -36,13 +37,19 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new RequestCulture("en-US");
     options.SupportedCultures = supportedCultures;
 });
+builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+    serverOptions.Listen(IPAddress.Loopback, 5000);
+    //serverOptions.Listen(IPAddress.Loopback, 5001, listenOptions =>
+    //{
+    //    listenOptions.UseHttps("testCert.pfx", "testPassword");
+    //});
+});
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
-builder.Services.AddHttpsRedirection(opt => {
-    opt.HttpsPort = 44300;
-});
+
 // Add other services...
 
 builder.Services.AddControllers();
