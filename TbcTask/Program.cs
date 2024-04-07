@@ -40,6 +40,9 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+builder.Services.AddHttpsRedirection(opt => {
+    opt.HttpsPort = 44300;
+});
 // Add other services...
 
 builder.Services.AddControllers();
