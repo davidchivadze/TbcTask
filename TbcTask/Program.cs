@@ -37,14 +37,14 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new RequestCulture("en-US");
     options.SupportedCultures = supportedCultures;
 });
-builder.WebHost.ConfigureKestrel((context, serverOptions) =>
-{
-    serverOptions.Listen(IPAddress.Loopback, 5000);
-    //serverOptions.Listen(IPAddress.Loopback, 5001, listenOptions =>
-    //{
-    //    listenOptions.UseHttps("testCert.pfx", "testPassword");
-    //});
-});
+//builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+//{
+//    serverOptions.Listen(IPAddress.Loopback, 5000);
+//    //serverOptions.Listen(IPAddress.Loopback, 5001, listenOptions =>
+//    //{
+//    //    listenOptions.UseHttps("testCert.pfx", "testPassword");
+//    //});
+//});
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
