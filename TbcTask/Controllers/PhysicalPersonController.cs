@@ -56,7 +56,7 @@ namespace TbcTask.Controllers
                 throw ex;
             }
         }
-        [HttpGet("GetPhysicalPersonConnectionReportAsync")]
+        [HttpGet("GetPhysicalPersonConnectionReportAsyncAA")]
         public async Task<Result<List<PhysicalPersonConnectionReportResponse>>> GetPhysicalPersonConnectionReportAsync()
         {
             try
